@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
@@ -20,11 +20,41 @@ const faqs = [
 export default function App() {
   return (
     <div>
-      <Accordion />
+      <Accordion data={faqs} />
     </div>
   );
 }
 
-function Accordion() {
-  return <div>TODO</div>;
+function Accordion({ data }) {
+  return (
+    <div className="accordion">
+      {data.map((item, i) => {
+        return (
+          <AccordionItem
+            key={i}
+            num={i + 1}
+            title={item.title}
+            text={item.text}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function AccordionItem({ num, title, text }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleToggle() {
+    setIsOpen(!isOpen);
+  }
+
+  return (
+    <div className={`item  ${isOpen ? "open" : null}`} onClick={handleToggle}>
+      <p className="number">{num < 9 ? `0${num}` : num}</p>
+      <p className="title">{title}</p>
+      <p className="icon">{isOpen ? "-" : "+"}</p>
+      {isOpen && <p className="content-box">{text}</p>}
+    </div>
+  );
 }
